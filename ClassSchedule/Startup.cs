@@ -22,6 +22,9 @@ namespace ClassSchedule
 
             services.AddMemoryCache();
             services.AddSession();
+            services.AddTransient<ClassScheduleUnitOfWork , ClassScheduleUnitOfWork>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+
 
             services.AddDbContext<ClassScheduleContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ClassScheduleContext")));
