@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ClassSchedule.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ClassSchedule
 {
@@ -22,9 +23,9 @@ namespace ClassSchedule
 
             services.AddMemoryCache();
             services.AddSession();
-            services.AddTransient<ClassScheduleUnitOfWork , ClassScheduleUnitOfWork>();
+            services.AddTransient<IClassScheduleUnitOfWork , ClassScheduleUnitOfWork>();
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-
+            services.AddHttpContextAccessor();
 
             services.AddDbContext<ClassScheduleContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ClassScheduleContext")));

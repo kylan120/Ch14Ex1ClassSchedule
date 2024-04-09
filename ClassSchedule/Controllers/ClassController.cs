@@ -6,16 +6,18 @@ namespace ClassSchedule.Controllers
 {
     public class ClassController : Controller
     {
-        private ClassScheduleUnitOfWork data { get; set; }
-        public ClassController(ClassScheduleContext ctx)
+        private IHttpContextAccessor accessor { get; set; }
+        private IClassScheduleUnitOfWork data { get; set; }
+        public ClassController(IClassScheduleUnitOfWork unit, IHttpContextAccessor ctx)
         {
-            data = new ClassScheduleUnitOfWork(ctx);
+            data = unit;
+            accessor = ctx;
         }
 
         public RedirectToActionResult Index() 
         {
             // clear session and navigate to list of classes
-            HttpContext.Session.Remove("dayid");
+            accessor.HttpContext.Session.Remove("dayid");
             return RedirectToAction("Index", "Home"); 
         }
 

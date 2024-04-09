@@ -6,17 +6,20 @@ namespace ClassSchedule.Controllers
 {
     public class HomeController : Controller
     {
-        private ClassScheduleUnitOfWork data { get; set; }
-        public HomeController(ClassScheduleContext ctx)
+        private IHttpContextAccessor accessor { get; set; }
+        private IClassScheduleUnitOfWork data { get; set; }
+
+        public HomeController(IClassScheduleUnitOfWork unit, IHttpContextAccessor ctx)
         {
-            data = new ClassScheduleUnitOfWork(ctx);
+            data = unit;
+            accessor = ctx;
         }
 
         public ViewResult Index(int id)
         {
             // if day id passed to action method, store in session
             if (id > 0) {
-                HttpContext.Session.SetInt32("dayid", id);
+                accessor.HttpContext.Session.SetInt32("dayid", id);
             }
 
             // options for Days query
